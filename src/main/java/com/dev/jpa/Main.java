@@ -19,7 +19,14 @@ public class Main {
 			
             tx.begin();
             
-			//
+			Member member = em.find(Member.class, "test2");
+			
+			member.setUserName("testname2");
+			
+			Member member2 = em.merge(member);
+			
+			System.out.println(member.hashCode());
+			System.out.println(member2.hashCode());
 			
             tx.commit();
 
