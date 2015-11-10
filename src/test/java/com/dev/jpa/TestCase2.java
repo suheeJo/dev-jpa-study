@@ -8,9 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import java.util.List;
 
-public class TestCase {
+public class TestCase2 {
 
     private EntityManagerFactory emf;
 
@@ -23,7 +22,7 @@ public class TestCase {
     @Test
     public void insertUserTest() throws Exception {
         control(this.emf, new Controller(){
-            void control(EntityManager em){
+            public void control(EntityManager em){
 
             }
         });
@@ -73,3 +72,4 @@ public class TestCase {
     }
 
 }
+
