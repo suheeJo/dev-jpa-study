@@ -9,7 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class TestCase2 {
+public class TestCase {
 
     private EntityManagerFactory emf;
 
@@ -20,10 +20,13 @@ public class TestCase2 {
     }
 
     @Test
-    public void insertUserTest() throws Exception {
+    public void insertMemberTest1() throws Exception {
         control(this.emf, new Controller(){
             public void control(EntityManager em){
-
+                Member member = new Member();
+                member.setId("test1");
+                member.setUserName("testname1");
+                em.persist(member);
             }
         });
     }
