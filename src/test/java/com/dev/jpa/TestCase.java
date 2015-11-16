@@ -24,11 +24,15 @@ public class TestCase {
         control(this.emf, new Controller(){
             public void control(EntityManager em){
                 Member member = new Member();
-                member.setId("test1");
                 member.setUserName("testname1");
                 em.persist(member);
             }
         });
+    }
+    
+    @Test
+    public void test2() throws Exception {
+    	control(this.emf, null);
     }
 
     @After
@@ -55,7 +59,9 @@ public class TestCase {
             System.out.println("Transaction Begin...");
             tx.begin();
 
-            controller.control(em);
+            if(controller != null){
+            	controller.control(em);
+            }
 
             tx.commit();
             System.out.println("Transaction Commit...");
