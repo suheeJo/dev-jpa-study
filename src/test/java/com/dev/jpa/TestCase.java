@@ -23,9 +23,18 @@ public class TestCase {
     public void insertMemberTest1() throws Exception {
         control(this.emf, new Controller(){
             public void control(EntityManager em){
+            	
                 Member member = new Member();
-                member.setUserName("testname1");
+                member.setUserName("testname3");
+                
+                Team team = new Team();
+                team.setId("team3");
+                team.setName("team3");
+                
+                member.setTeam(team);
+                
                 em.persist(member);
+                em.persist(team);
             }
         });
     }
@@ -33,6 +42,21 @@ public class TestCase {
     @Test
     public void test2() throws Exception {
     	control(this.emf, null);
+    }
+    
+    @Test
+    public void test3() throws Exception {
+    	control(this.emf, new Controller(){
+            public void control(EntityManager em){
+            	
+                Member member = em.find(Member.class, 66L);
+                
+                Team team = member.getTeam();
+                
+                 System.out.print(team.getName());
+                
+            }
+        });
     }
 
     @After
