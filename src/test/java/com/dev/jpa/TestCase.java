@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -53,7 +55,56 @@ public class TestCase {
                 
                 Team team = member.getTeam();
                 
-                 System.out.print(team.getName());
+                 System.out.println(team.getName());
+                
+            }
+        });
+    }
+    
+    @Test
+    public void test4() throws Exception {
+    	control(this.emf, new Controller(){
+            public void control(EntityManager em){
+            	
+                Member member = em.createQuery("select m from Member m join m.team t where m.id = 66", Member.class).getSingleResult();
+                
+                em.remove(member.getTeam());
+                
+            }
+        });
+    }
+    
+    @Test
+    public void test5() throws Exception {
+    	control(this.emf, new Controller(){
+            public void control(EntityManager em){
+            	
+                List<Team> teamList =em.createQuery("select t from Team t", Team.class).getResultList();
+                
+                for(Team team : teamList){
+                	for(Member member : team.getMemberList()){
+                    	System.out.println(member.getUserName());
+                    }
+                }
+                
+            }
+        });
+    }
+    
+    @Test
+    public void test6() throws Exception {
+    	control(this.emf, new Controller(){
+            public void control(EntityManager em){
+            	
+                Team team =em.createQuery("select t from Team t where t.id = 'team3'", Team.class).getSingleResult();
+                
+                Member member = new Member();
+                
+                member.setUserName("testname5");
+                
+                member.setTeam(team);
+                
+                em.persist(member);
                 
             }
         });
