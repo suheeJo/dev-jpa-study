@@ -55,7 +55,7 @@ public class TestCase {
                 
                 Team team = member.getTeam();
                 
-                 System.out.println(team.getName());
+                System.out.println(team.getName());
                 
             }
         });
@@ -91,6 +91,39 @@ public class TestCase {
         });
     }
     
+    
+    
+    //무한루프 확인
+    @Test
+    public void test7() throws Exception {
+    	control(this.emf, new Controller(){
+            public void control(EntityManager em){
+            	
+            	Member member = new Member();
+            	member.setId(100l);
+            	member.setUserName("tester");
+            	
+            	Team team = new Team();
+            	team.setId("200");
+            	team.setName("teamTest");
+            	
+            	member.setTeam(team);
+            	team.addMember(member);
+            	
+            	
+            	System.out.println("member team : "+ member.getTeam().getName());
+            	System.out.println("team members : ");
+            	
+            	for (Member m : team.getMemberList()) {
+					System.out.println(m.getUserName());
+				}
+            	
+                
+            }
+        });
+    }
+    
+    
     @Test
     public void test6() throws Exception {
     	control(this.emf, new Controller(){
@@ -109,6 +142,55 @@ public class TestCase {
             }
         });
     }
+    
+  //일대다 확인
+    @Test
+    public void test8() throws Exception {
+    	control(this.emf, new Controller(){
+            public void control(EntityManager em){
+            	
+            	Member member = new Member();
+            	member.setUserName("tester3");
+            	em.persist(member);
+            	
+            	Team team = new Team();
+            	team.setId("team5");
+            	team.setName("team5");
+            	team.addMember(member);
+            	
+            	em.persist(team);
+            }
+        });
+    }
+    
+    //다대다  단방향 확인
+    @Test
+    public void test9() throws Exception {
+    	control(this.emf, new Controller(){
+            public void control(EntityManager em){
+            	
+            	Product productA = new Product();
+            	productA.setId("productA");
+            	productA.setName("상품A");
+            	em.persist(productA);
+            	
+//            	Member member = new Member();
+//            	member.setUserName("회원1");
+//            	member.getProducts().add(productA);
+//            	em.persist(member);
+            	
+            	Member member = em.find(Member.class, 26l);
+            	List<Product> products  = member.getProducts();
+            	
+            	for (Product product : products) {
+					System.out.println("product.name = "+ product.getName());
+				}
+
+            }
+        });
+    }
+    
+    
 
     @After
     public void destroy() throws Exception {

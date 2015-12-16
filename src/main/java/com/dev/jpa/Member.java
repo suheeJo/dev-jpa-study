@@ -1,5 +1,11 @@
 package com.dev.jpa;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,7 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -32,9 +40,24 @@ public class Member {
 	private byte[] bytes;
 
 	private Integer age;
+	
+	@ManyToMany
+	@JoinTable(name="MEMBER_PRODUCT", joinColumns=@JoinColumn(name="id"),
+	inverseJoinColumns=@JoinColumn(name="PRODUCT_ID"))
+	private List<Product> products = new ArrayList<Product>();
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TEAM_ID3")
 	private Team team;
+
+	public void setTeam(Team team) {
+		this.team = team;
+
+		if (team.getMemberList() == null)
+			team.setMemberList(new ArrayList<Member>());
+
+		if (!team.getMemberList().contains(this))
+			team.getMemberList().add(this);
+	}
 
 }
